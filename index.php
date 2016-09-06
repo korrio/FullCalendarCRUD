@@ -13,6 +13,9 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.1.1/fullcalendar.min.js"></script>
+
+
+
         <script src='js/bootstrap-colorpicker.min.js'></script>
         <script src='js/bootstrap-timepicker.min.js'></script>
         <script src='js/main.js'></script>
@@ -73,21 +76,26 @@
                         <div class="error"></div>
                         <form class="form-horizontal" id="crud-form">
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="title">Title</label>
+                                <label class="col-md-4 control-label" for="title">Adult Price</label>
                                 <div class="col-md-4">
-                                    <input id="title" name="title" type="text" class="form-control input-md" />
+                                    <input id="adult" name="adult" type="text" class="form-control input-md" />
+                                    <input id="time" name="time" type="hidden" class="" />
+                                    <input id="title" name="title" type="hidden" class="" />
+                                    <input id="date" name="date" type="hidden" class="" />
+                                    <input id="startDate" name="startDate" type="hidden" class="" />
+                                    <input id="endDate" name="endDate" type="hidden" class="" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="time">Time</label>
-                                <div class="col-md-4 input-append bootstrap-timepicker">
-                                    <input id="time" name="time" type="text" class="form-control input-md" />
+                                <label class="col-md-4 control-label" for="time">Child Price</label>
+                                <div class="col-md-4 input-append">
+                                    <input id="child" name="child" type="text" class="form-control input-md" />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="description">Description</label>
+                                <label class="col-md-4 control-label" for="description">Seat</label>
                                 <div class="col-md-4">
-                                    <textarea class="form-control" id="description" name="description"></textarea>
+                                    <input id="seat" name="seat" class="form-control input-md" />
                                 </div>
                             </div>
                             <div class="form-group">

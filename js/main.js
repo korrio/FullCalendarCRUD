@@ -1,4 +1,10 @@
 $(function(){
+
+    //var currentDate;
+    var startDateSave;
+    var endDateSave;
+
+     function addUser() {}
     var currentDate; // Holds the day clicked when adding a new event
     var currentEvent; // Holds the event object when editing an event
     $('#color').colorpicker(); // Colopicker
@@ -10,17 +16,15 @@ $(function(){
     });  // Timepicker
     // Fullcalendar
     $('#calendar').fullCalendar({
-        timeFormat: 'H(:mm)',
-        header: {
-            left: 'prev, next, today',
-            center: 'title',
-            right: 'month, basicWeek, basicDay'
-        },
-        // Get all events stored in database
-        events: 'crud/getEvents.php',
-        // Handle Day Click
-        dayClick: function(date, event, view) {
-            currentDate = date.format();
+        selectable:true,
+        selectHelper:true,
+        editable:true,
+        select: function(start, end) {
+
+            currentDate = start.format();
+            endDate = end.format();
+            
+            var title = 'Add Tour Allotment (' + currentDate + ' to '+endDate+')';
             // Open modal to add event
             modal({
                 // Available buttons when adding
@@ -31,8 +35,62 @@ $(function(){
                         label: 'Add' // Buttons label
                     }
                 },
-                title: 'Add Event (' + date.format() + ')' // Modal title
+                title: title, // Modal title
+                date: start,
+                startDate: start,
+                endDate: end
             });
+
+console.log(title);
+             
+                //var title = prompt('Event Title:');
+                // var aPrice = prompt('Adult price:');
+                // var cPrice = prompt('Child price:');
+                // var eventData;
+                // if (title) {
+                //     eventData = {
+                //         title: title,
+                //         // aPrice:aPrice,
+                //         // cPrice:cPrice,
+                //         start: start,
+                //         end: end
+                //     };
+                //     $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+                // }
+                $('#calendar').fullCalendar('unselect');
+            },
+            editable: true,
+        timeFormat: 'H(:mm)',
+        header: {
+            left: 'prev, next, today',
+            center: 'title',
+            right: 'month, basicWeek, basicDay'
+        },
+        // Get all events stored in database
+        events: 'crud/getEvents.php',
+        // Handle Day Click
+        dayClick: function(date, event, view) {
+            // Open modal to add event
+            currentDate = date.format();
+            
+            var title = 'Add Tour Allotment (' + currentDate + ')';
+            // Open modal to add event
+            modal({
+                // Available buttons when adding
+                buttons: {
+                    add: {
+                        id: 'add-event', // Buttons id
+                        css: 'btn-success', // Buttons class
+                        label: 'Add' // Buttons label
+                    }
+                },
+                title: title, // Modal title
+                date: date,
+                startDate: date,
+                endDate: date
+            });
+
+            console.log(title);
         },
         // Event Mouseover
         eventMouseover: function(calEvent, jsEvent, view){
@@ -55,6 +113,8 @@ $(function(){
         eventClick: function(calEvent, jsEvent, view) {
             // Set currentEvent variable according to the event clicked in the calendar
             currentEvent = calEvent;
+            console.log(calEvent);
+            //console.log(jsEvent);
             // Open modal to edit or delete event
             modal({
                 // Available buttons when editing
@@ -77,12 +137,23 @@ $(function(){
     });
     // Prepares the modal window according to data passed
     function modal(data) {
+        $('#title').val(data.title);
+        if(data.date != null) {
+            $('#date').val(data.date.format());
+            $('#startDate').val(data.startDate.format());
+        $('#endDate').val(data.endDate.format());
+        }
+        else {
+            $('#date').val(data.event.date);
+        }
+
+        
         // Set modal title
         $('.modal-title').html(data.title);
         // Clear buttons except Cancel
         $('.modal-footer button:not(".btn-default")').remove();
         // Set input values
-        $('#title').val(data.event ? data.event.title : '');
+        //$('#title').val(data.event ? data.event.title : '');
         if( ! data.event) {
             // When adding set timepicker to current time
             var now = new Date();
@@ -104,17 +175,20 @@ $(function(){
     }
     // Handle Click on Add Button
     $('.modal').on('click', '#add-event',  function(e){
-        if(validator(['title', 'description'])) {
+        //if(validator(['title', 'description'])) {
             $.post('crud/addEvent.php', {
-                title: $('#title').val(),
-                description: $('#description').val(),
-                color: $('#color').val(),
-                date: currentDate + ' ' + getTime()
+                title: $("#title").val(),
+                //description: "555",
+                description: "adult price: " + $("#adult").val() + "<br/> child price: " + $("#child").val(),
+                color: "#3a87ad",
+                date: currentDate + ' ' + getTime(),
+                startDate: $("#startDate").val() + ' ' + "00:00:00.000000",
+                endDate: $("#endDate").val() + ' ' + "00:00:00.000000"
             }, function(result){
                 $('.modal').modal('hide');
                 $('#calendar').fullCalendar("refetchEvents");
             });
-        }
+        //}
     });
     // Handle click on Update Button
     $('.modal').on('click', '#update-event',  function(e){
