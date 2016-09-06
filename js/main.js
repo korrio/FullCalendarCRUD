@@ -16,6 +16,12 @@ $(function(){
     });  // Timepicker
     // Fullcalendar
     $('#calendar').fullCalendar({
+        // header: {
+        //     left: 'prev,next today',
+        //     center: 'title',
+        //     right: 'month,listWeek'
+        // },
+
         selectable:true,
         selectHelper:true,
         editable:true,
@@ -64,7 +70,7 @@ console.log(title);
         header: {
             left: 'prev, next, today',
             center: 'title',
-            right: 'month, basicWeek, basicDay'
+            right: 'month,agendaWeek,agendaDay,listWeek'
         },
         // Get all events stored in database
         events: 'crud/getEvents.php',
