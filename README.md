@@ -13,3 +13,6 @@ Instructions
 1. Use sql/calendar.sql to build your database.
 2. Open crud/connect.php and change credentials according to your server's settings
 
+=======
+# FullCalendarCRUD
+fullcalendar.io for tour booking
