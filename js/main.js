@@ -1,5 +1,7 @@
 $(function(){
 
+
+
     //var currentDate;
     var startDateSave;
     var endDateSave;
@@ -34,7 +36,7 @@ selectOverlap: function(event) {
             endDate = end.format();
             
             var title = 'Add Tour Allotment (' + currentDate + ' to '+endDate+')';
-            // Open modal to add event
+            
             modal({
                 // Available buttons when adding
                 buttons: {
@@ -79,11 +81,11 @@ console.log(title);
         events: 'crud/getEvents.php',
         // Handle Day Click
         dayClick: function(date, event, view) {
-            // Open modal to add event
+            
             currentDate = date.format();
             
             var title = 'Add Tour Allotment (' + currentDate + ')';
-            // Open modal to add event
+           
             modal({
                 // Available buttons when adding
                 buttons: {
@@ -162,8 +164,7 @@ console.log(title);
                 event: calEvent
             });
             }
-            //console.log(jsEvent);
-            // Open modal to edit or delete event
+           
             
         }
     });
@@ -173,7 +174,7 @@ console.log(title);
         if(data.date != null) {
             $('#date').val(data.date.format());
             $('#startDate').val(data.startDate.format());
-        $('#endDate').val(data.endDate.format());
+            $('#endDate').val(data.endDate.format());
         }
         else {
             $('#date').val(data.event.date);
@@ -205,21 +206,68 @@ console.log(title);
         //Show Modal
         $('.modal').modal('show');
     }
-    // Handle Click on Add Button
-    $('.modal').on('click', '#add-event',  function(e){
-        //if(validator(['title', 'description'])) {
-            $.post('crud/addEvent.php', {
+
+    function padLeft(nr, n, str){
+        return Array(n-String(nr).length+1).join(str||'0')+nr;
+    }
+
+    function addEvent(theDate) {
+        $.post('crud/addEvent.php', {
                 title: $("#title").val(),
                 //description: "555",
                 description: "adult price: " + $("#adult").val() + "<br/> child price: " + $("#child").val(),
                 color: "#3a87ad",
-                date: currentDate + ' ' + getTime(),
-                startDate: $("#startDate").val() + ' ' + "00:00:00.000000",
-                endDate: $("#endDate").val() + ' ' + "00:00:00.000000"
+                date: theDate,
+                startDate: theDate,
+                endDate: theDate
+                // date: theDate + ' ' + getTime(),
+                // startDate: theDate + ' ' + "00:00:00.000000",
+                // endDate: theDate + ' ' + "00:00:00.000000"
             }, function(result){
                 $('.modal').modal('hide');
                 $('#calendar').fullCalendar("refetchEvents");
-            });
+                // $('.modal').modal('hide');
+                // $('#calendar').fullCalendar("refetchEvents");
+           });
+    }
+    // Handle Click on Add Button
+    $('.modal').on('click', '#add-event',  function(e){
+       
+        var itr = moment.twix(new Date($("#startDate").val()),new Date($("#endDate").val())).iterate("days");
+        var range=[];
+        while(itr.hasNext()){
+            var date = itr.next().toDate();
+            var day = date.getDate();
+            var monthIndex = date.getMonth();
+            var year = date.getFullYear();
+            var theDate = year + "-" + padLeft(monthIndex+1,2) + "-" + padLeft(day,2);
+            
+            range.push(theDate)
+        }
+        
+        console.log(range);
+
+        $.each(range,function (i, item) {
+            console.log(i);
+            console.log(item);
+            if(i < range.length-1)
+                addEvent(item);
+            
+        });
+
+        //if(validator(['title', 'description'])) {
+            // $.post('crud/addEvent.php', {
+            //     title: $("#title").val(),
+            //     //description: "555",
+            //     description: "adult price: " + $("#adult").val() + "<br/> child price: " + $("#child").val(),
+            //     color: "#3a87ad",
+            //     date: currentDate + ' ' + getTime(),
+            //     startDate: $("#startDate").val() + ' ' + "00:00:00.000000",
+            //     endDate: $("#endDate").val() + ' ' + "00:00:00.000000"
+            // }, function(result){
+            //     $('.modal').modal('hide');
+            //     $('#calendar').fullCalendar("refetchEvents");
+            // });
         //}
     });
     // Handle click on Update Button

@@ -20,6 +20,8 @@
         <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.1.1/fullcalendar.min.js"></script> -->
          <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.0/fullcalendar.min.js"></script>
 
+         <script src="//cdn.bootcss.com/twix.js/1.1.1/twix.min.js"></script>
+
 
 
         <script src='js/bootstrap-colorpicker.min.js'></script>
@@ -61,6 +63,7 @@
                 cursor: pointer;
                 font-size: 11px;
             }
+
         </style>
     </head>
     <body>
