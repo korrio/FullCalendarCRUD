@@ -21,7 +21,10 @@ $(function(){
         //     center: 'title',
         //     right: 'month,listWeek'
         // },
-
+selectOverlap: function(event) {
+        console.log(event);
+        return event.rendering === 'background';
+    },
         selectable:true,
         selectHelper:true,
         editable:true,
@@ -119,10 +122,29 @@ console.log(title);
         eventClick: function(calEvent, jsEvent, view) {
             // Set currentEvent variable according to the event clicked in the calendar
             currentEvent = calEvent;
+            console.log("calEvent");
             console.log(calEvent);
-            //console.log(jsEvent);
-            // Open modal to edit or delete event
-            modal({
+            console.log("jsEvent");
+            console.log(jsEvent);
+            console.log("view");
+            console.log(view);
+            //console.log(calEvent);
+            var e = jsEvent;
+            // if(e.ctrlKey)
+            //     alert('control pressed');
+            
+            // if(e.altKey) 
+            //     alert('alt pressed');
+
+            if(e.shiftKey) {
+                //alert('shift pressed');
+                $.get('crud/deleteEvent.php?id=' + currentEvent._id, function(result){
+                    console.log(result);
+                    $('#calendar').fullCalendar("refetchEvents");    
+                });
+
+            } else {
+                modal({
                 // Available buttons when editing
                 buttons: {
                     delete: {
@@ -139,6 +161,10 @@ console.log(title);
                 title: 'Edit Event "' + calEvent.title + '"',
                 event: calEvent
             });
+            }
+            //console.log(jsEvent);
+            // Open modal to edit or delete event
+            
         }
     });
     // Prepares the modal window according to data passed
