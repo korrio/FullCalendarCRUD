@@ -78,7 +78,7 @@ console.log(title);
             right: 'month,listWeek'
         },
         // Get all events stored in database
-        events: 'crud/getEvents.php',
+        events: 'crud/getEvents.php?item_id='+$("[name='item_id']").val(),
         // Handle Day Click
         dayClick: function(date, event, view) {
             
@@ -140,7 +140,7 @@ console.log(title);
 
             if(e.shiftKey) {
                 //alert('shift pressed');
-                $.get('crud/deleteEvent.php?id=' + currentEvent._id, function(result){
+                $.get('crud/deleteEvent.php?id=' + currentEvent._id + '&item_id=' + $("[name='item_id']").val(), function(result){
                     console.log(result);
                     $('#calendar').fullCalendar("refetchEvents");    
                 });
@@ -219,7 +219,8 @@ console.log(title);
                 color: "#3a87ad",
                 date: theDate,
                 startDate: theDate,
-                endDate: theDate
+                endDate: theDate,
+                item_id: $("[name='item_id']").val()
                 // date: theDate + ' ' + getTime(),
                 // startDate: theDate + ' ' + "00:00:00.000000",
                 // endDate: theDate + ' ' + "00:00:00.000000"
@@ -278,7 +279,8 @@ console.log(title);
                 title: $('#title').val(),
                 description: $('#description').val(),
                 color: $('#color').val(),
-                date: currentEvent.date.split(' ')[0]  + ' ' +  getTime()
+                date: currentEvent.date.split(' ')[0]  + ' ' +  getTime(),
+                item_id: $("[name='item_id']").val()
             }, function(result){
                 $('.modal').modal('hide');
                 $('#calendar').fullCalendar("refetchEvents");
@@ -287,7 +289,7 @@ console.log(title);
     });
     // Handle Click on Delete Button
     $('.modal').on('click', '#delete-event',  function(e){
-        $.get('crud/deleteEvent.php?id=' + currentEvent._id, function(result){
+        $.get('crud/deleteEvent.php?id=' + currentEvent._id + "&item_id=" + $("[name='item_id']").val(), function(result){
             $('.modal').modal('hide');
             $('#calendar').fullCalendar("refetchEvents");
         });

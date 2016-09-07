@@ -63,6 +63,9 @@
                 cursor: pointer;
                 font-size: 11px;
             }
+            .item_id {
+                display: none;
+            }
 
         </style>
     </head>
@@ -70,7 +73,8 @@
         <div class="container">
             <div class="row clearfix">
                 <div class="col-md-12 column">
-                        <div id='calendar'></div>
+                    <p class="item_id"><?php if(isset($_GET['item_id'])) echo $_GET['item_id']; else echo 0; ?></p>
+                    <div id='calendar' data-tour-id="<?php if(isset($_GET['item_id'])) echo $_GET['item_id']; else echo 0; ?>"></div>
                 </div>
             </div>
         </div>
@@ -88,6 +92,7 @@
                                 <label class="col-md-4 control-label" for="title">Adult Price</label>
                                 <div class="col-md-4">
                                     <input id="adult" name="adult" type="text" class="form-control input-md" />
+                                    <input id="item_id" name="item_id" type="hidden" value="<?php if(isset($_GET['item_id'])) echo $_GET['item_id']; else echo 0; ?>" class="" />
                                     <input id="time" name="time" type="hidden" class="" />
                                     <input id="title" name="title" type="hidden" class="" />
                                     <input id="date" name="date" type="hidden" class="" />
