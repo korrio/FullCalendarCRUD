@@ -1,6 +1,7 @@
 $(function(){
 
-
+    $('.slz-booking-block').toggleClass('show-book-block');
+    $(".slz-book-tour").hide();
 
     //var currentDate;
     var startDateSave;
@@ -23,13 +24,13 @@ $(function(){
         //     center: 'title',
         //     right: 'month,listWeek'
         // },
-selectOverlap: function(event) {
-        console.log(event);
-        return event.rendering === 'background';
-    },
-        selectable:true,
-        selectHelper:true,
-        editable:true,
+        selectOverlap: function(event) {
+            console.log(event);
+            return event.rendering === 'background';
+        },
+        selectable:false,
+        selectHelper:false,
+        editable:false,
         select: function(start, end) {
 
             currentDate = start.format();
@@ -80,29 +81,29 @@ console.log(title);
         // Get all events stored in database
         events: 'https://www.mamybooking.com/allotment/crud/getEvents.php',
         // Handle Day Click
-        dayClick: function(date, event, view) {
+        // dayClick: function(date, event, view) {
             
-            currentDate = date.format();
+        //     currentDate = date.format();
             
-            var title = 'Add Tour Allotment (' + currentDate + ')';
+        //     var title = 'Add Tour Allotment (' + currentDate + ')';
            
-            modal({
-                // Available buttons when adding
-                buttons: {
-                    add: {
-                        id: 'add-event', // Buttons id
-                        css: 'btn-success', // Buttons class
-                        label: 'Add' // Buttons label
-                    }
-                },
-                title: title, // Modal title
-                date: date,
-                startDate: date,
-                endDate: date
-            });
+        //     modal({
+        //         // Available buttons when adding
+        //         buttons: {
+        //             add: {
+        //                 id: 'add-event', // Buttons id
+        //                 css: 'btn-success', // Buttons class
+        //                 label: 'Add' // Buttons label
+        //             }
+        //         },
+        //         title: title, // Modal title
+        //         date: date,
+        //         startDate: date,
+        //         endDate: date
+        //     });
 
-            console.log(title);
-        },
+        //     console.log(title);
+        // },
         // Event Mouseover
         eventMouseover: function(calEvent, jsEvent, view){
             var tooltip = '<div class="event-tooltip">' + calEvent.description + '</div>';
@@ -140,10 +141,10 @@ console.log(title);
 
             if(e.shiftKey) {
                 //alert('shift pressed');
-                $.get('https://www.mamybooking.com/allotment/crud/deleteEvent.php?id=' + currentEvent._id, function(result){
-                    console.log(result);
-                    $('#calendar').fullCalendar("refetchEvents");    
-                });
+                // $.get('https://www.mamybooking.com/allotment/crud/deleteEvent.php?id=' + currentEvent._id, function(result){
+                //     console.log(result);
+                //     $('#calendar').fullCalendar("refetchEvents");    
+                // });
 
             } else {
                 modal({
@@ -170,6 +171,10 @@ console.log(title);
     });
     // Prepares the modal window according to data passed
     function modal(data) {
+
+        $(".loading").hide();
+        $(".modal .modal-footer").hide();
+        //$(".modal .modal-body").html($(".timeline-book-block").html());
         $('#title').val(data.title);
         if(data.date != null) {
             $('#date').val(data.date.format());
@@ -177,6 +182,10 @@ console.log(title);
             $('#endDate').val(data.endDate.format());
         }
         else {
+            var theDate = data.event.date;
+            theDate = theDate.substr(0,10);
+            $(".slz-booking-block [name='start_date']").val(theDate);
+
             $('#date').val(data.event.date);
         }
 
