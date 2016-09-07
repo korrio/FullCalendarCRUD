@@ -75,7 +75,7 @@ console.log(title);
         header: {
             left: 'prev, next, today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay,listWeek'
+            right: 'month,listWeek'
         },
         // Get all events stored in database
         events: 'crud/getEvents.php',
