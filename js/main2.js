@@ -1,6 +1,7 @@
 $(function(){
 
-
+    $('.slz-booking-block').toggleClass('show-book-block');
+    $(".slz-book-tour").hide();
 
     //var currentDate;
     var startDateSave;
@@ -23,13 +24,13 @@ $(function(){
         //     center: 'title',
         //     right: 'month,listWeek'
         // },
-selectOverlap: function(event) {
-        console.log(event);
-        return event.rendering === 'background';
-    },
-        selectable:true,
-        selectHelper:true,
-        editable:true,
+        selectOverlap: function(event) {
+            console.log(event);
+            return event.rendering === 'background';
+        },
+        selectable:false,
+        selectHelper:false,
+        editable:false,
         select: function(start, end) {
 
             currentDate = start.format();
@@ -78,31 +79,31 @@ console.log(title);
             right: 'month,listWeek'
         },
         // Get all events stored in database
-        events: 'crud/getEvents.php?item_id='+$("[name='item_id']").val(),
+        events: 'https://www.mamybooking.com/allotment/crud/getEvents.php?item_id='+$("#calendar").attr("data-tour-id"),
         // Handle Day Click
-        dayClick: function(date, event, view) {
+        // dayClick: function(date, event, view) {
             
-            currentDate = date.format();
+        //     currentDate = date.format();
             
-            var title = 'Add Tour Allotment (' + currentDate + ')';
+        //     var title = 'Add Tour Allotment (' + currentDate + ')';
            
-            modal({
-                // Available buttons when adding
-                buttons: {
-                    add: {
-                        id: 'add-event', // Buttons id
-                        css: 'btn-success', // Buttons class
-                        label: 'Add' // Buttons label
-                    }
-                },
-                title: title, // Modal title
-                date: date,
-                startDate: date,
-                endDate: date
-            });
+        //     modal({
+        //         // Available buttons when adding
+        //         buttons: {
+        //             add: {
+        //                 id: 'add-event', // Buttons id
+        //                 css: 'btn-success', // Buttons class
+        //                 label: 'Add' // Buttons label
+        //             }
+        //         },
+        //         title: title, // Modal title
+        //         date: date,
+        //         startDate: date,
+        //         endDate: date
+        //     });
 
-            console.log(title);
-        },
+        //     console.log(title);
+        // },
         // Event Mouseover
         eventMouseover: function(calEvent, jsEvent, view){
             var tooltip = '<div class="event-tooltip">' + calEvent.description + '</div>';
@@ -140,10 +141,10 @@ console.log(title);
 
             if(e.shiftKey) {
                 //alert('shift pressed');
-                $.get('crud/deleteEvent.php?id=' + currentEvent._id + '&item_id=' + $("[name='item_id']").val(), function(result){
-                    console.log(result);
-                    $('#calendar').fullCalendar("refetchEvents");    
-                });
+                // $.get('https://www.mamybooking.com/allotment/crud/deleteEvent.php?id=' + currentEvent._id, function(result){
+                //     console.log(result);
+                //     $('#calendar').fullCalendar("refetchEvents");    
+                // });
 
             } else {
                 modal({
@@ -170,13 +171,21 @@ console.log(title);
     });
     // Prepares the modal window according to data passed
     function modal(data) {
-        $('#title').val(data.title);
+
+        $(".loading").hide();
+        $(".modal .modal-footer").hide();
+        //$(".modal .modal-body").html($(".timeline-book-block").html());
+        $('#title').val("฿" + $("#adult").val() + "");
         if(data.date != null) {
             $('#date').val(data.date.format());
             $('#startDate').val(data.startDate.format());
             $('#endDate').val(data.endDate.format());
         }
         else {
+            var theDate = data.event.date;
+            theDate = theDate.substr(0,10);
+            $(".slz-booking-block [name='start_date']").val(theDate);
+
             $('#date').val(data.event.date);
         }
 
@@ -212,15 +221,15 @@ console.log(title);
     }
 
     function addEvent(theDate) {
-        $.post('crud/addEvent.php', {
-                title: "฿" + $("#adult").val(),
+        $.post('https://www.mamybooking.com/allotment/crud/addEvent.php', {
+                title: $("#title").val(),
                 //description: "555",
                 description: "adult price: " + $("#adult").val() + "<br/> child price: " + $("#child").val(),
-                color: $("#color").val(),
+                color: $('#color').val(),
                 date: theDate,
                 startDate: theDate,
                 endDate: theDate,
-                item_id: $("[name='item_id']").val()
+                item_id: $("#calendar").attr("data-tour-id")
                 // date: theDate + ' ' + getTime(),
                 // startDate: theDate + ' ' + "00:00:00.000000",
                 // endDate: theDate + ' ' + "00:00:00.000000"
@@ -257,7 +266,7 @@ console.log(title);
         });
 
         //if(validator(['title', 'description'])) {
-            // $.post('crud/addEvent.php', {
+            // $.post('https://www.mamybooking.com/allotment/crud/addEvent.php', {
             //     title: $("#title").val(),
             //     //description: "555",
             //     description: "adult price: " + $("#adult").val() + "<br/> child price: " + $("#child").val(),
@@ -274,13 +283,13 @@ console.log(title);
     // Handle click on Update Button
     $('.modal').on('click', '#update-event',  function(e){
         if(validator(['title', 'description'])) {
-            $.post('crud/updateEvent.php', {
+            $.post('https://www.mamybooking.com/allotment/crud/updateEvent.php', {
                 id: currentEvent._id,
-                 title: "฿" + $("#adult").val(),
+                title: $('#title').val(),
                 description: $('#description').val(),
                 color: $('#color').val(),
                 date: currentEvent.date.split(' ')[0]  + ' ' +  getTime(),
-                item_id: $("[name='item_id']").val()
+                item_id: $("#calendar").attr("data-tour-id")
             }, function(result){
                 $('.modal').modal('hide');
                 $('#calendar').fullCalendar("refetchEvents");
@@ -289,7 +298,7 @@ console.log(title);
     });
     // Handle Click on Delete Button
     $('.modal').on('click', '#delete-event',  function(e){
-        $.get('crud/deleteEvent.php?id=' + currentEvent._id + "&item_id=" + $("[name='item_id']").val(), function(result){
+        $.get('https://www.mamybooking.com/allotment/crud/deleteEvent.php?id=' + currentEvent._id + "&item_id=" + $("#calendar").attr("data-tour-id"), function(result){
             $('.modal').modal('hide');
             $('#calendar').fullCalendar("refetchEvents");
         });

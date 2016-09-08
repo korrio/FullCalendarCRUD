@@ -34,6 +34,9 @@
                 font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
                 font-size: 14px;
             }
+            .fc-time {
+                display: none !important;
+            }
             .fc th {
                 padding: 10px 0px;
                 vertical-align: middle;
