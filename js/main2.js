@@ -1,7 +1,7 @@
 $(function(){
 
-    $('.slz-booking-block').toggleClass('show-book-block');
-    $(".slz-book-tour").hide();
+    // $('.slz-booking-block').toggleClass('show-book-block');
+    // $(".slz-book-tour").hide();
 
     //var currentDate;
     var startDateSave;
@@ -185,9 +185,28 @@ console.log(title);
             var theDate = data.event.date;
             theDate = theDate.substr(0,10);
             $(".slz-booking-block [name='start_date']").val(theDate);
+            
+            $(".slz-booking-block .price-adult span").html(data.event.adult_price);
+            $(".slz-booking-block .price-child span").html(data.event.child_price);
+            $(".slz-booking-block .availabel").html(data.event.seat);
+
+             $(".slz-booking-block .sub-total span").html(data.event.adult_price * $("[name='adults']").val());
+             $(".slz-booking-block .total-price span").html(data.event.adult_price * $("[name='adults']").val());
+
+            //  $('#adult').val();
+            // $('#child').val();
+            // $('#seat').val(data.event.seat);
 
             $('#date').val(data.event.date);
         }
+
+        // if(data.event != null) {
+           
+        // } else {
+        //     $('#adult').val("");
+        //     $('#child').val("");
+        //     $('#seat').val("");
+        // }
 
         
         // Set modal title

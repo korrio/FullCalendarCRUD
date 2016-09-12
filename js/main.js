@@ -160,7 +160,7 @@ console.log(title);
                         label: 'Update'
                     }
                 },
-                title: 'Edit Event "' + calEvent.title + '"',
+                title: 'Edit Event "' + $("[name='item_id']").val() + '"',
                 event: calEvent
             });
             }
@@ -170,15 +170,31 @@ console.log(title);
     });
     // Prepares the modal window according to data passed
     function modal(data) {
-        $('#title').val(data.title);
+        //$('#title').val(data.title);
         if(data.date != null) {
             $('#date').val(data.date.format());
             $('#startDate').val(data.startDate.format());
             $('#endDate').val(data.endDate.format());
+
         }
         else {
             $('#date').val(data.event.date);
+           
         }
+
+        if(data.event != null) {
+            $('#adult').val(data.event.adult_price);
+            $('#child').val(data.event.child_price);
+            $('#seat').val(data.event.seat);
+        } else {
+            $('#adult').val("");
+            $('#child').val("");
+            $('#seat').val("");
+        }
+
+        // if(data.adult_price != null) {
+
+        // } 
 
         
         // Set modal title
@@ -211,16 +227,19 @@ console.log(title);
         return Array(n-String(nr).length+1).join(str||'0')+nr;
     }
 
-    function addEvent(theDate) {
-        $.post('crud/addEvent.php', {
+    function addEvent(theDate,adult_price,child_price,seat) {
+        $.post('https://www.mamybooking.com/allotment/crud/addEvent.php', {
                 title: "฿" + $("#adult").val(),
                 //description: "555",
                 description: "adult price: " + $("#adult").val() + "<br/> child price: " + $("#child").val(),
-                color: $("#color").val(),
+                color: $('#color').val(),
                 date: theDate,
                 startDate: theDate,
                 endDate: theDate,
-                item_id: $("[name='item_id']").val()
+                item_id: $("#calendar").attr("data-tour-id"),
+                adult_price: adult_price,
+                child_price: child_price,
+                seat: seat
                 // date: theDate + ' ' + getTime(),
                 // startDate: theDate + ' ' + "00:00:00.000000",
                 // endDate: theDate + ' ' + "00:00:00.000000"
@@ -243,7 +262,8 @@ console.log(title);
             var year = date.getFullYear();
             var theDate = year + "-" + padLeft(monthIndex+1,2) + "-" + padLeft(day,2);
             
-            range.push(theDate)
+            var a = new Array(theDate,$("#adult").val(),$("#child").val(),$("#seat").val());
+            range.push(a)
         }
         
         console.log(range);
@@ -251,8 +271,9 @@ console.log(title);
         $.each(range,function (i, item) {
             console.log(i);
             console.log(item);
+            a = item;
             if(i < range.length-1)
-                addEvent(item);
+                addEvent(a[0],a[1],a[2],a[3]);
             
         });
 
@@ -273,19 +294,22 @@ console.log(title);
     });
     // Handle click on Update Button
     $('.modal').on('click', '#update-event',  function(e){
-        if(validator(['title', 'description'])) {
+        //if(validator(['title', 'description'])) {
             $.post('crud/updateEvent.php', {
                 id: currentEvent._id,
                  title: "฿" + $("#adult").val(),
-                description: $('#description').val(),
+                description: "adult price: " + $("#adult").val() + "<br/> child price: " + $("#child").val(),
                 color: $('#color').val(),
                 date: currentEvent.date.split(' ')[0]  + ' ' +  getTime(),
-                item_id: $("[name='item_id']").val()
+                item_id: $("[name='item_id']").val(),
+                adult_price: $("#adult").val(),
+                child_price: $("#child").val(),
+                seat: $("#seat").val()
             }, function(result){
                 $('.modal').modal('hide');
                 $('#calendar').fullCalendar("refetchEvents");
             });
-        }
+        //}
     });
     // Handle Click on Delete Button
     $('.modal').on('click', '#delete-event',  function(e){
