@@ -3,6 +3,27 @@ $(function(){
     // $('.slz-booking-block').toggleClass('show-book-block');
     // $(".slz-book-tour").hide();
 
+    var clone = $(".wrapper-btn.slz-book-tour").clone();
+
+    //var clone2 = $(".slz-booking-block.timeline-book-block").clone();
+
+    clone.addClass("the_top");
+    $(".btn-holder").eq(0).html(clone);
+    //$(".title-style-2").eq(0).prepend(clone);
+
+    $(".wrapper-btn.slz-book-tour").not(".the_top").attr('id', 'book-the-tour');
+    clone.on('click', function() {
+        //alert(1);
+
+        $(".slz-booking-block").addClass("show-book-block");
+
+        $('html, body').animate({
+            scrollTop: $(".slz-booking-block").offset().top
+        }, 2000);
+
+    });
+    //$(".vc_row.wpb_row.vc_row-fluid").eq(1).append(clone2);
+
     //var currentDate;
     var startDateSave;
     var endDateSave;
@@ -79,7 +100,7 @@ console.log(title);
             right: 'month,listWeek'
         },
         // Get all events stored in database
-        events: 'https://www.mamybooking.com/allotment/crud/getEvents.php?item_id='+$("#calendar").attr("data-tour-id"),
+        events: 'https://www.mamybooking.com/allotment/crud/getEvents.php?item_id='+$("#calendar").attr("data-tour-id")+"&user=1",
         // Handle Day Click
         // dayClick: function(date, event, view) {
             
@@ -184,6 +205,12 @@ console.log(title);
         else {
             var theDate = data.event.date;
             theDate = theDate.substr(0,10);
+
+            $(".slz-booking-block [name='start_date']").typed({
+                strings: [theDate],
+                typeSpeed: 0
+              });
+
             $(".slz-booking-block [name='start_date']").val(theDate);
             
             $(".slz-booking-block .price-adult span").html(data.event.adult_price);
@@ -243,7 +270,8 @@ console.log(title);
         $.post('https://www.mamybooking.com/allotment/crud/addEvent.php', {
                 title: $("#title").val(),
                 //description: "555",
-                description: "adult price: " + $("#adult").val() + "<br/> child price: " + $("#child").val(),
+                description: "adult price: " + $("#adult").val() + "<br/> child price: " + $("#child").val(), 
+                //+ "<br/> seat available: " + $("#seat").val(),
                 color: $('#color').val(),
                 date: theDate,
                 startDate: theDate,

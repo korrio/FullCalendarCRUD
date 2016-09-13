@@ -109,7 +109,7 @@
                                     <input id="child" name="child" type="text" class="form-control input-md" />
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" style="display:none;">
                                 <label class="col-md-4 control-label" for="description">Seat</label>
                                 <div class="col-md-4">
                                     <input id="seat" name="seat" class="form-control input-md" />
