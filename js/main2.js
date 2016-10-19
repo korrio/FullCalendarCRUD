@@ -40,6 +40,12 @@ $(function(){
     });  // Timepicker
     // Fullcalendar
     $('#calendar').fullCalendar({
+        dayRender: function(date, cell){
+            var currentDate = new Date();
+            if (date < currentDate){
+                $(cell).addClass('disabled');
+            }
+        },
         // header: {
         //     left: 'prev,next today',
         //     center: 'title',
@@ -148,6 +154,15 @@ console.log(title);
             currentEvent = calEvent;
             console.log("calEvent");
             console.log(calEvent);
+            console.log("date selected");
+            console.log((calEvent.date).replace(" 00:00:00",""));
+            var the_date = (calEvent.date).replace(" 00:00:00","");
+            $("td.fc-day.fc-widget-content.fc-state-highlight").removeClass("fc-state-highlight");
+            $("[data-date='"+the_date+"']").eq(0).toggleClass("fc-state-highlight");
+
+            //$(".fc-state-highlight").removeClass("fc-state-highlight");
+            //$(jsEvent.target).addClass("fc-state-highlight");
+
             console.log("jsEvent");
             console.log(jsEvent);
             console.log("view");
