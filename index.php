@@ -10,8 +10,8 @@
         <link href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.0.0/fullcalendar.print.css' rel='stylesheet' media='print' />
 
         <link href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/css/bootstrapValidator.min.css" rel="stylesheet" />
-        <link href="//allotment.mamybooking.com/css/bootstrap-colorpicker.min.css" rel="stylesheet" />
-        <link href="//allotment.mamybooking.com/css/bootstrap-timepicker.min.css" rel="stylesheet" />
+        <link href="./css/bootstrap-colorpicker.min.css" rel="stylesheet" />
+        <link href="./css/bootstrap-timepicker.min.css" rel="stylesheet" />
         <script src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js'></script>
         <!-- <script src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.min.js'></script>-->
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -24,8 +24,8 @@
 
 
 
-        <script src='//allotment.mamybooking.com/js/bootstrap-colorpicker.min.js'></script>
-        <script src='//allotment.mamybooking.com/js/bootstrap-timepicker.min.js'></script>
+        <script src='./js/bootstrap-colorpicker.min.js'></script>
+        <script src='./js/bootstrap-timepicker.min.js'></script>
         <script src='js/main.js'></script>
         <style>
             body {
